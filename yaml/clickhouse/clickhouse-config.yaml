@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: clickhouse
+spec:
+  selector: 
+    matchLabels: 
+      app: clickhouse
+  serviceName: clickhouse
+  replicas: 1 # 可根据需要增加副本数
+  template:
+    metadata:
+      labels:
+        app: clickhouse
+    spec:
+      containers:
+        - name: clickhouse
+          image: yandex/clickhouse-server:latest # 使用适当的ClickHouse镜像
+          ports:
+            - containerPort: 8123 # ClickHouse HTTP端口
+            - containerPort: 9000 # ClickHouse客户端端口
+          volumeMounts:
+            - name: clickhouse-data
+              mountPath: /var/lib/clickhouse
+  volumeClaimTemplates:
+    - metadata:
+        name: clickhouse-data
+      spec:
+        accessModes: ["ReadWriteOnce"]
+        resources:
+          requests:
+            storage: 5Gi # 根据需要设置存储容量

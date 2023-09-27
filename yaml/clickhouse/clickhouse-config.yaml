@@ -29,4 +29,4 @@ spec:
         accessModes: ["ReadWriteOnce"]
         resources:
           requests:
-            storage: 5Gi # 根据需要设置存储容量
+            storage: 2Gi # 根据需要设置存储容量
